@@ -21,6 +21,8 @@ export interface DateInputProps {
   showPicker: boolean;
   hideDay?: boolean;
   hideMonth?: boolean;
+  inputTailwindClass?: string;
+  inputStyle?: any;
 }
 
 const DateInput = ({
@@ -41,8 +43,10 @@ const DateInput = ({
   onYearChange,
   onYearBlur,
   showPicker,
+  inputStyle,
   hideDay = false,
   hideMonth = false,
+  inputTailwindClass = "flex flex-grow flex-shrink-0 items-center border border-gray-500 w-full py-0.5 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600",
 }: DateInputProps) => {
   const maxMonth = (year < maxYear && 12) || maxDate.getMonth() + 1;
   const maxDay =
@@ -50,7 +54,7 @@ const DateInput = ({
       getMaxDayPerMonth(+monthInput)) ||
     maxDate.getDate();
   return (
-    <div className="flex flex-grow flex-shrink-0 border border-gray-500">
+    <div className={(!inputStyle && inputTailwindClass) || ""} style={inputStyle}>
       <div
         className="flex-grow px-0.5 py-0 box-content"
         onClick={() => setShowPicker(true)}

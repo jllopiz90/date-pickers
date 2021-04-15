@@ -165,7 +165,7 @@ const DateRangePicker: React.FC = () => {
       <div className="mt-5 flex justify-around">
         {/* {granularity !== 'weekly' && dateRangePicker()} */}
         {/* {weekRangePicker()} */}
-        {monthRangePicker()}
+        {weekRangePicker()}
       </div>
     </div>
   );
