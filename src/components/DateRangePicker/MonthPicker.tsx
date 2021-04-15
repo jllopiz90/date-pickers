@@ -53,8 +53,6 @@ const MonthPicker = ({
   const [year, setYear] = useState(today.getFullYear());
   const [monthInput, setMonthInput] = useState(dateValue.getMonth() + 1);
   const [tempMonthInput, setTempMonth] = useState(dateValue.getMonth() + 1);
-  const [dayInput, setDayInput] = useState(dateValue.getDate());
-  const [tempDayInput, setTempDayInput] = useState(dateValue.getDate());
   const [yearInput, setYearInput] = useState(today.getFullYear());
   const [tempYearInput, setTempYearInput] = useState(today.getFullYear());
   const [maxYear, setMaxYear] = useState(maxDate.getFullYear());
@@ -63,8 +61,6 @@ const MonthPicker = ({
   useEffect(() => {
     setMonthInput(dateValue.getMonth() + 1);
     setTempMonth(dateValue.getMonth() + 1);
-    setDayInput(dateValue.getDate());
-    setTempDayInput(dateValue.getDate());
     setYearInput(dateValue.getFullYear());
     setTempYearInput(dateValue.getFullYear());
     setYear(dateValue.getFullYear());
@@ -118,7 +114,7 @@ const MonthPicker = ({
 
   const onMonthBlur = (event: any) => {
     if (tempMonthInput > 0) {
-      const newDate = new Date(yearInput, tempMonthInput - 1, dayInput);
+      const newDate = new Date(yearInput, tempMonthInput - 1, 1);
       setSelectedDate(newDate);
       setMonthInput(tempMonthInput);
       onChange(newDate);
@@ -136,7 +132,7 @@ const MonthPicker = ({
 
   const onYearBlur = (event: any) => {
     if (tempYearInput > 2000 && tempYearInput <= maxYear) {
-      const newDate = new Date(tempYearInput, monthInput - 1, dayInput);
+      const newDate = new Date(tempYearInput, monthInput - 1, 1);
       setYearInput(tempYearInput);
       setSelectedDate(newDate);
       onChange(newDate);

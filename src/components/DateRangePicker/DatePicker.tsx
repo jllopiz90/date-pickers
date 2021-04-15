@@ -30,7 +30,7 @@ const DayBtn = ({
   disabled = false,
 }: DayBtnProps): JSX.Element => (
   <button
-    className={`px-1 m-1 focus:outline-none ${
+    className={`px-1 mx-1 my-2 focus:outline-none ${
       currentDay && !active
         ? "bg-calendar-yellow-200 hover:bg-calendar-yellow-100"
         : ""
@@ -198,7 +198,7 @@ const DatePicker = ({
       <div
         style={{
           width: 380,
-          height: 300,
+          height: 320,
           position: "absolute",
           top: "100%",
           bottom: "unset",
