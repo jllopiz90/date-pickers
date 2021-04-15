@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 // import DatePicker from 'components/elements/DatePicker';
 import WeekPicker from "./WeekPicker";
 import DatePicker from './DatePicker';
+import MonthPicker from './MonthPicker';
 // import { useAppDispatch } from 'hooks';
 // import { setStartDate, setEndDate , useFiltersState } from 'features/filters/filters.slice';
 import { isLeapYear } from "../../utils/utils";
@@ -128,6 +129,18 @@ const DateRangePicker: React.FC = () => {
     </>
   );
 
+  const monthRangePicker = () => (
+    <>
+      <MonthPicker dateValue={startDate} onChange={onStartDateChange} />
+      <MonthPicker
+        dateValue={endDate}
+        maxDate={maxEndDate}
+        minDate={minEndDate}
+        onChange={onEndDateChange}
+      />
+    </>
+  );
+
   // const getGranularityText = () => {
   //     switch(granularity) {
   //         case 'daily':
@@ -152,7 +165,7 @@ const DateRangePicker: React.FC = () => {
       <div className="mt-5 flex justify-around">
         {/* {granularity !== 'weekly' && dateRangePicker()} */}
         {/* {weekRangePicker()} */}
-        {weekRangePicker()}
+        {monthRangePicker()}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+export const monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const formatDate: (_date: string, displayTime?: boolean, format?: string) => string = (
     _date,
@@ -81,7 +82,6 @@ export const getTotal = (data: any[], key: string) =>
     }, 0);
 
 export const getMaxDayPerMonth = (month: number) => {
-    console.log('type of month', typeof month)
     switch(month){
         case 1:
         case 3:
