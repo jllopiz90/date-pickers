@@ -6,10 +6,10 @@ export interface DateInputProps {
   tempYearInput: number;
   maxYear: number;
   maxDate: Date;
-  dayInput: number;
-  tempDayInput: number;
-  monthInput: number;
-  tempMonthInput: number;
+  dayInput?: number;
+  tempDayInput?: number;
+  monthInput?: number;
+  tempMonthInput?: number;
   selectedDate: Date;
   setShowPicker: (param: boolean) => void;
   onDayChange?: (event: any) => void;
@@ -19,8 +19,6 @@ export interface DateInputProps {
   onYearChange: (event: any) => void;
   onYearBlur: (event: any) => void;
   showPicker: boolean;
-  hideDay?: boolean;
-  hideMonth?: boolean;
   inputTailwindClass?: string;
   inputStyle?: any;
 }
@@ -44,17 +42,18 @@ const DateInput = ({
   onYearBlur,
   showPicker,
   inputStyle,
-  hideDay = false,
-  hideMonth = false,
-  inputTailwindClass = "flex flex-grow flex-shrink-0 items-center border border-gray-500 w-full py-0.5 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600",
+  inputTailwindClass = "flex flex-grow flex-shrink-0 items-center border border-gray-500 w-full px-1 py-0.5 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600",
 }: DateInputProps) => {
   const maxMonth = (year < maxYear && 12) || maxDate.getMonth() + 1;
   const maxDay =
-    ((year < maxYear || monthInput < maxMonth) &&
-      getMaxDayPerMonth(+monthInput)) ||
+    ((year < maxYear || (monthInput || 0) < maxMonth) &&
+      getMaxDayPerMonth((selectedDate.getMonth() + 1) || 0)) ||
     maxDate.getDate();
   return (
-    <div className={(!inputStyle && inputTailwindClass) || ""} style={inputStyle}>
+    <div
+      className={(!inputStyle && inputTailwindClass) || ""}
+      style={inputStyle}
+    >
       <div
         className="flex-grow px-0.5 py-0 box-content"
         onClick={() => setShowPicker(true)}
@@ -66,7 +65,7 @@ const DateInput = ({
           className="invisible absolute"
           readOnly
         />
-        {!hideMonth && (
+        {!!tempMonthInput && (
           <>
             {tempMonthInput < 10 && !!tempMonthInput && <span>0</span>}
             <input
@@ -86,9 +85,9 @@ const DateInput = ({
             <span className="whitespace-pre px-0.5">/</span>
           </>
         )}
-        {!hideDay && (
+        {!!tempDayInput && (
           <>
-            {dayInput < 10 && !!tempDayInput && <span>0</span>}
+            {(dayInput || 0) < 10 && !!tempDayInput && <span>0</span>}
             <input
               autoComplete="off"
               data-input="true"
@@ -99,7 +98,7 @@ const DateInput = ({
               placeholder="--"
               type="number"
               value={tempDayInput}
-              className={`${tempDayInput < 10 ? "w-2.5" : "w-5"}`}
+              className={`${(tempDayInput) < 10 ? "w-2.5" : "w-5"}`}
               onChange={onDayChange}
               onBlur={onDayBlur}
             />

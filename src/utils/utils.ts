@@ -102,4 +102,13 @@ export const getMaxDayPerMonth = (month: number) => {
             throw new Error("Parameter month has an invalid value.");
     }
 
-}    
+}
+
+export const getArrayWithNumbers = (days: number) => Array.from(Array(days).keys());
+
+export const getArrayWithYears = (bottom?: number) => {
+    const bottomYear = bottom || 1979;
+    const today = new Date();
+    const thisYear = today.getFullYear();
+    return Array.from(Array(thisYear - bottomYear + 1).keys()).map((number) => number + bottomYear).reverse();
+}

@@ -3,9 +3,8 @@ import ChevronLeftBtn from "../icons/ChevronLeftBtn";
 import ChevronRight from "../icons/ChevronRightBtn";
 import OutsideEvent from "../../hooks/useOutsideElementEvent";
 import DateInput from "./DateInput";
-import { monthNames, getMaxDayPerMonth } from "../../utils/utils";
+import { monthNames, getMaxDayPerMonth, getArrayWithNumbers } from "../../utils/utils";
 
-const getArrayWithNumbers = (days: number) => Array.from(Array(days).keys());
 const today = new Date();
 
 export interface DatePickerProps {

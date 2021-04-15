@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import WeekPicker from "./WeekPicker";
 import DatePicker from './DatePicker';
 import MonthPicker from './MonthPicker';
+import YearPicker from './YearPicker';
 // import { useAppDispatch } from 'hooks';
 // import { setStartDate, setEndDate , useFiltersState } from 'features/filters/filters.slice';
 import { isLeapYear } from "../../utils/utils";
@@ -141,6 +142,18 @@ const DateRangePicker: React.FC = () => {
     </>
   );
 
+  const yearRangePicker = () => (
+    <>
+      <YearPicker dateValue={startDate} onChange={onStartDateChange} />
+      <YearPicker
+        dateValue={endDate}
+        maxDate={maxEndDate}
+        minDate={minEndDate}
+        onChange={onEndDateChange}
+      />
+    </>
+  );
+
   // const getGranularityText = () => {
   //     switch(granularity) {
   //         case 'daily':
@@ -155,7 +168,7 @@ const DateRangePicker: React.FC = () => {
   // }
 
   return (
-    <div className="w-80 px-2 py-5 pt-5 bg-white rounded-lg shadow-lg  z-10">
+    <div className="w-96 px-2 py-5 pt-5 bg-white rounded-lg shadow-lg  z-10">
       <div className="flex justify-center">
         {/* {getGranularityText()} */}
         <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -165,7 +178,7 @@ const DateRangePicker: React.FC = () => {
       <div className="mt-5 flex justify-around">
         {/* {granularity !== 'weekly' && dateRangePicker()} */}
         {/* {weekRangePicker()} */}
-        {weekRangePicker()}
+        {yearRangePicker()}
       </div>
     </div>
   );

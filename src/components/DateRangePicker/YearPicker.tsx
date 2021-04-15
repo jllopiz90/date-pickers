@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import ChevronLeftBtn from "../icons/ChevronLeftBtn";
-import ChevronRight from "../icons/ChevronRightBtn";
 import OutsideEvent from "../../hooks/useOutsideElementEvent";
 import DateInput from "./DateInput";
-import { monthShortNames } from "../../utils/utils";
+import { getArrayWithYears } from "../../utils/utils";
 
 const today = new Date();
 
@@ -14,24 +12,24 @@ export interface DatePickerProps {
   onChange: (date: Date) => void;
 }
 
-export interface MonthBtnProps {
-  month: string;
+export interface YearBtnProps {
+  year: number;
   onClick: () => void;
   active?: boolean;
-  currentMonth?: boolean;
+  currentYear?: boolean;
   disabled?: boolean;
 }
 
-const MonthBtn = ({
-  month,
+const YearBtn = ({
+  year,
   onClick,
   active = false,
-  currentMonth = false,
+  currentYear = false,
   disabled = false,
-}: MonthBtnProps): JSX.Element => (
+}: YearBtnProps): JSX.Element => (
   <button
-    className={`p-5 m-1 focus:outline-none ${
-      currentMonth && !active
+    className={`p-4 m-1 focus:outline-none ${
+      currentYear && !active
         ? "bg-calendar-yellow-200 hover:bg-calendar-yellow-100"
         : ""
     } ${active ? "bg-calendar-blue-200 hover:bg-calendar-blue-100" : ""} ${
@@ -39,11 +37,11 @@ const MonthBtn = ({
     }`}
     onClick={() => !disabled && onClick()}
   >
-    <span className="px-2 text-sm">{month}</span>
+    <span className="px-2 text-sm">{year}</span>
   </button>
 );
 
-const MonthPicker = ({
+const YearPicker = ({
   onChange,
   maxDate = today,
   minDate = new Date(1979, 0, 1),
@@ -51,20 +49,12 @@ const MonthPicker = ({
 }: DatePickerProps): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(dateValue);
   const [year, setYear] = useState(today.getFullYear());
-  const [monthInput, setMonthInput] = useState(dateValue.getMonth() + 1);
-  const [tempMonthInput, setTempMonth] = useState(dateValue.getMonth() + 1);
-  const [dayInput, setDayInput] = useState(dateValue.getDate());
-  const [tempDayInput, setTempDayInput] = useState(dateValue.getDate());
   const [yearInput, setYearInput] = useState(today.getFullYear());
   const [tempYearInput, setTempYearInput] = useState(today.getFullYear());
   const [maxYear, setMaxYear] = useState(maxDate.getFullYear());
   const [showPicker, setShowPicker] = useState(false);
 
   useEffect(() => {
-    setMonthInput(dateValue.getMonth() + 1);
-    setTempMonth(dateValue.getMonth() + 1);
-    setDayInput(dateValue.getDate());
-    setTempDayInput(dateValue.getDate());
     setYearInput(dateValue.getFullYear());
     setTempYearInput(dateValue.getFullYear());
     setYear(dateValue.getFullYear());
@@ -85,47 +75,15 @@ const MonthPicker = ({
     }
   }, [minDate, maxDate, onChange, selectedDate]);
 
-  const decreaseYear = () => {
-    setYear(year - 1);
-  };
 
-  const increaseYear = () => {
-    if (year < maxYear) {
-      setYear(year + 1);
-    }
-  };
-
-
-  const onMonthClick = (monthParam: number) => {
-    setYearInput(year);
-    setMonthInput(monthParam + 1);
-    const date = new Date(year, monthParam, 1);
+  const onYearClick = (yearParam: number) => {
+    const date = new Date(yearParam, 0, 1);
     setSelectedDate(date);
     onChange(date);
     setShowPicker(false);
   };
 
-  const isThisMonth = (monthIndex: number) =>
-    today.getMonth() === monthIndex && today.getFullYear() === year;
-
-  const onMonthChange = (event: any) => {
-    const maxMonth = (yearInput < maxYear && 12) || maxDate.getMonth() + 1;
-    if (+event.target.value <= maxMonth) {
-      const noZeros = event.target.value.replace(/^0+/, "");
-      setTempMonth(noZeros);
-    }
-  };
-
-  const onMonthBlur = (event: any) => {
-    if (tempMonthInput > 0) {
-      const newDate = new Date(yearInput, tempMonthInput - 1, dayInput);
-      setSelectedDate(newDate);
-      setMonthInput(tempMonthInput);
-      onChange(newDate);
-    } else {
-      setTempMonth(monthInput);
-    }
-  };
+  const isThisYear = (year: number) => today.getFullYear() === year;
 
   const onYearChange = (event: any) => {
     if (+event.target.value <= maxYear) {
@@ -136,7 +94,7 @@ const MonthPicker = ({
 
   const onYearBlur = (event: any) => {
     if (tempYearInput > 2000 && tempYearInput <= maxYear) {
-      const newDate = new Date(tempYearInput, monthInput - 1, dayInput);
+      const newDate = new Date(tempYearInput, 0, 1);
       setYearInput(tempYearInput);
       setSelectedDate(newDate);
       onChange(newDate);
@@ -149,7 +107,7 @@ const MonthPicker = ({
     <span className="contents">
       <div
         style={{
-          width: 360,
+          width: 380,
           height: 280,
           position: "absolute",
           top: "100%",
@@ -160,26 +118,18 @@ const MonthPicker = ({
         }}
         className="bg-white border-2 overflow-y-scroll mx-2"
       >
-        <div className="flex flex-row justify-around pt-2">
-          <ChevronLeftBtn onClick={decreaseYear} size={3} />
-          <span className="">{year}</span>
-          <ChevronRight onClick={increaseYear} size={3} />
-        </div>
-        <div className="pt-2">
-          {monthShortNames.map((monthShortName, index) => (
-            <MonthBtn
-              month={monthShortName}
-              active={
-                index === selectedDate.getMonth() &&
-                year === selectedDate.getFullYear()
-              }
+        <div className="pt-2 flex justify-center flex-wrap">
+          {getArrayWithYears().map((year) => (
+            <YearBtn
+              year={year}
+              active={year === selectedDate.getFullYear()}
               disabled={
-                new Date(year, index, 1) > maxDate ||
-                new Date(year, index, 1) < minDate
+                new Date(year, 0, 1) > maxDate ||
+                new Date(year, 0, 1) < minDate
               }
-              currentMonth={isThisMonth(index)}
-              onClick={() => onMonthClick(index)}
-              key={`month_${monthShortName}`}
+              currentYear={isThisYear(year)}
+              onClick={() => onYearClick(year)}
+              key={`month_${year}`}
             />
           ))}
         </div>
@@ -195,12 +145,8 @@ const MonthPicker = ({
           tempYearInput={tempYearInput}
           maxYear={maxYear}
           maxDate={maxDate}
-          monthInput={monthInput}
-          tempMonthInput={tempMonthInput}
           selectedDate={selectedDate}
           setShowPicker={setShowPicker}
-          onMonthChange={onMonthChange}
-          onMonthBlur={onMonthBlur}
           onYearChange={onYearChange}
           onYearBlur={onYearBlur}
           showPicker={showPicker}
@@ -211,4 +157,4 @@ const MonthPicker = ({
   );
 };
 
-export default MonthPicker;
+export default YearPicker;
