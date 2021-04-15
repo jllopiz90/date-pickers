@@ -11,7 +11,7 @@ const ChevronLeftBtn = ({
 }) =>
   (double && (
     <button
-      className="mx-6 p-2 focus:outline-none active:bg-gray-300"
+      className="mx-2 p-2 focus:outline-none active:bg-gray-300"
       onClick={onClick}
     >
       <svg

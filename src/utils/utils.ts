@@ -1,4 +1,4 @@
-const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export const formatDate: (_date: string, displayTime?: boolean, format?: string) => string = (
     _date,
@@ -79,3 +79,27 @@ export const getTotal = (data: any[], key: string) =>
     data.reduce((accumulator, currentValue) => {
         return accumulator + currentValue[key];
     }, 0);
+
+export const getMaxDayPerMonth = (month: number) => {
+    console.log('type of month', typeof month)
+    switch(month){
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            return 31;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            return 30;
+        case 2:
+            return 28;
+        default:
+            throw new Error("Parameter month has an invalid value.");
+    }
+
+}    

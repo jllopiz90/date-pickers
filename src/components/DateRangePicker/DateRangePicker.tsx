@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 // import DatePicker from 'components/elements/DatePicker';
 import WeekPicker from "./WeekPicker";
+import DatePicker from './DatePicker';
 // import { useAppDispatch } from 'hooks';
 // import { setStartDate, setEndDate , useFiltersState } from 'features/filters/filters.slice';
-import { isLeapYear } from "../utils/utils";
+import { isLeapYear } from "../../utils/utils";
 
 const DateRangePicker: React.FC = () => {
   // const dispatch = useAppDispatch();
@@ -89,9 +90,10 @@ const DateRangePicker: React.FC = () => {
     //         dispatch(setEndDate(date.toLocaleString()));
     //         break;
     // }
-    console.log("end date change to:", date.toLocaleString());
-    const endWeek = date.getDate() + 6;
-    const lastWeekDay = new Date(year, date.getMonth(), endWeek);
+            const endWeek = date.getDate() + 6;
+            const lastWeekDay = new Date(year, date.getMonth(), endWeek);
+    console.log("end date change to:", lastWeekDay.toLocaleString());
+
     setEndDate(lastWeekDay);
   };
 
@@ -106,6 +108,18 @@ const DateRangePicker: React.FC = () => {
     <>
       <WeekPicker dateValue={startDate} onChange={onStartDateChange} />
       <WeekPicker
+        dateValue={endDate}
+        maxDate={maxEndDate}
+        minDate={minEndDate}
+        onChange={onEndDateChange}
+      />
+    </>
+  );
+
+  const dateRangePicker = () => (
+    <>
+      <DatePicker dateValue={startDate} onChange={onStartDateChange} />
+      <DatePicker
         dateValue={endDate}
         maxDate={maxEndDate}
         minDate={minEndDate}
@@ -137,6 +151,7 @@ const DateRangePicker: React.FC = () => {
       </div>
       <div className="mt-5 flex justify-around">
         {/* {granularity !== 'weekly' && dateRangePicker()} */}
+        {/* {weekRangePicker()} */}
         {weekRangePicker()}
       </div>
     </div>
