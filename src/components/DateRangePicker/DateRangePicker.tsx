@@ -8,13 +8,21 @@ import { isLeapYear } from "../../utils/utils";
 
 interface DateRangePickerProps {
   granularity?: "daily" | "weekly" | "monthly" | "yearly";
+  onStartDateChange?: (startDate: Date) => void;
+  onEndDateChange?: (endDate: Date) => void;
+  initialStartDate?: Date;
+  initialEndDate?: Date;
 }
 
-const DateRangePicker = ({ granularity = "daily" }: DateRangePickerProps) => {
+const DateRangePicker = ({
+  granularity = "daily",
+  initialStartDate = new Date(),
+  initialEndDate = new Date(),
+}: DateRangePickerProps) => {
   const [maxEndDate, setMaxEndDate] = useState<Date>(new Date());
   const [minEndDate, setMinEndDate] = useState<Date>(new Date());
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date>(initialStartDate);
+  const [endDate, setEndDate] = useState<Date>(initialEndDate);
 
   useEffect(() => {
     const today = new Date();
