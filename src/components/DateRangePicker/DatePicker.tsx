@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import ChevronLeftBtn from "../icons/ChevronLeftBtn";
-import ChevronRight from "../icons/ChevronRightBtn";
+import ButtonIcon from "../icons/button-icon";
+import ChevronLeft from "../icons/ChevronLeft";
+import ChevronRight from "../icons/ChevronRight";
 import OutsideEvent from "../../hooks/useOutsideElementEvent";
 import DateInput from "./DateInput";
-import { monthNames, getMaxDayPerMonth, getArrayWithNumbers } from "../../utils/utils";
+import {
+  monthNames,
+  getMaxDayPerMonth,
+  getArrayWithNumbers,
+} from "../../utils/utils";
 
 const today = new Date();
 
@@ -209,13 +214,29 @@ const DatePicker = ({
         className="bg-white border-2 overflow-y-scroll mx-2"
       >
         <div className="flex flex-row justify-center pt-2">
-          <ChevronLeftBtn onClick={decreaseYear} size={3} double />
-          <ChevronLeftBtn onClick={decreaseMonth} size={3} />
-          <span className="">
+          <ButtonIcon
+            onClick={decreaseYear}
+            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
+            icon={() => <ChevronLeft size={3} double />}
+          />
+          <ButtonIcon
+            onClick={decreaseMonth}
+            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
+            icon={() => <ChevronLeft size={3} />}
+          />
+          <span className="mx-8">
             {monthNames[month - 1]} {year}
           </span>
-          <ChevronRight onClick={increaseMonth} size={3} />
-          <ChevronRight onClick={increaseYear} size={3} double />
+          <ButtonIcon
+            onClick={increaseMonth}
+            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
+            icon={() => <ChevronRight size={3} />}
+          />
+          <ButtonIcon
+            onClick={increaseYear}
+            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
+            icon={() => <ChevronRight size={3} double />}
+          />
         </div>
         <div>
           {getArrayWithNumbers(getMaxDayPerMonth(month)).map((dayNumber) => (

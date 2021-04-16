@@ -1,6 +1,6 @@
 import { IconComponent } from "./icon.component";
 
-const ChevronDown: IconComponent = ({
+const ChevronRight: IconComponent = ({
   color = "currentColor",
   size = 6,
   double = false,
@@ -17,7 +17,7 @@ const ChevronDown: IconComponent = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+        d="M13 5l7 7-7 7M5 5l7 7-7 7"
       />
     </svg>
   )) || (
@@ -32,9 +32,9 @@ const ChevronDown: IconComponent = ({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
-        d="M19 9l-7 7-7-7"
+        d="M9 5l7 7-7 7"
       />
     </svg>
   );
 
-export default ChevronDown;
+export default ChevronRight;

@@ -1,3 +1,4 @@
+import ButtonIcon from "../icons/button-icon";
 import CalendarIcon from "../icons/Calendar";
 import { getYYYYMMDDFormat, getMaxDayPerMonth } from "../../utils/utils";
 
@@ -47,7 +48,7 @@ const DateInput = ({
   const maxMonth = (year < maxYear && 12) || maxDate.getMonth() + 1;
   const maxDay =
     ((year < maxYear || (monthInput || 0) < maxMonth) &&
-      getMaxDayPerMonth((selectedDate.getMonth() + 1) || 0)) ||
+      getMaxDayPerMonth(selectedDate.getMonth() + 1 || 0)) ||
     maxDate.getDate();
   return (
     <div
@@ -98,7 +99,7 @@ const DateInput = ({
               placeholder="--"
               type="number"
               value={tempDayInput}
-              className={`${(tempDayInput) < 10 ? "w-2.5" : "w-5"}`}
+              className={`${tempDayInput < 10 ? "w-2.5" : "w-5"}`}
               onChange={onDayChange}
               onBlur={onDayBlur}
             />
@@ -120,12 +121,11 @@ const DateInput = ({
           onBlur={onYearBlur}
         ></input>
       </div>
-      <button
+      <ButtonIcon
         className="border-0 bg-transparent py-1 px-1.5"
+        icon={CalendarIcon}
         onClick={() => setShowPicker(!showPicker)}
-      >
-        <CalendarIcon />
-      </button>
+      />
     </div>
   );
 };
