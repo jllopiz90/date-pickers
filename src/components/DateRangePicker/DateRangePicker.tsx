@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import WeekPicker from "./WeekPicker";
 import DatePicker from "./DatePicker";
 import MonthPicker from "./MonthPicker";
 import YearPicker from "./YearPicker";
-import { isLeapYear } from "../../utils/utils";
 
 interface DateRangePickerProps {
   granularity?: "daily" | "weekly" | "monthly" | "yearly";
@@ -19,46 +18,13 @@ const DateRangePicker = ({
   initialStartDate = new Date(),
   initialEndDate = new Date(),
 }: DateRangePickerProps) => {
-  const [maxEndDate, setMaxEndDate] = useState<Date>(new Date());
   const [minEndDate, setMinEndDate] = useState<Date>(new Date());
   const [startDate, setStartDate] = useState<Date>(initialStartDate);
   const [endDate, setEndDate] = useState<Date>(initialEndDate);
 
-  useEffect(() => {
-    const today = new Date();
-    const startD = new Date(startDate);
-    setMinEndDate(startD);
-    switch (granularity) {
-      case "weekly":
-      case "monthly":
-        const beforeFeb29 = startD.getMonth() < 2;
-        const daysInYear =
-          isLeapYear(startD.getFullYear()) && beforeFeb29 ? 366 : 365;
-        const yearAhead = new Date(startDate);
-        yearAhead.setDate(startD.getDate() + daysInYear);
-        const maxMonth = today > yearAhead ? yearAhead : today;
-        maxMonth.setHours(maxMonth.getHours() + 1);
-        setMaxEndDate(maxMonth);
-        break;
-      case "yearly":
-        const decadeAhead = new Date(startDate);
-        decadeAhead.setFullYear(startD.getFullYear() + 10);
-        const maxYear = today > decadeAhead ? decadeAhead : today;
-        maxYear.setHours(maxYear.getHours() + 1);
-        setMaxEndDate(maxYear);
-        break;
-      default:
-        const monthAhead = new Date(startDate);
-        monthAhead.setMonth(startD.getMonth() + 1);
-        const maxDay = today > monthAhead ? monthAhead : today;
-        maxDay.setHours(maxDay.getHours() + 1);
-        setMaxEndDate(maxDay);
-        break;
-    }
-  }, [granularity, startDate]);
-
   const onStartDateChange = (date: Date) => {
     setStartDate(date);
+    setMinEndDate(date);
   };
 
   const onEndDateChange = (date: Date) => {
@@ -89,7 +55,6 @@ const DateRangePicker = ({
       <WeekPicker dateValue={startDate} onChange={onStartDateChange} />
       <WeekPicker
         dateValue={endDate}
-        maxDate={maxEndDate}
         minDate={minEndDate}
         onChange={onEndDateChange}
       />
@@ -101,7 +66,6 @@ const DateRangePicker = ({
       <DatePicker dateValue={startDate} onChange={onStartDateChange} />
       <DatePicker
         dateValue={endDate}
-        maxDate={maxEndDate}
         minDate={minEndDate}
         onChange={onEndDateChange}
       />
@@ -113,7 +77,6 @@ const DateRangePicker = ({
       <MonthPicker dateValue={startDate} onChange={onStartDateChange} />
       <MonthPicker
         dateValue={endDate}
-        maxDate={maxEndDate}
         minDate={minEndDate}
         onChange={onEndDateChange}
       />
@@ -125,7 +88,6 @@ const DateRangePicker = ({
       <YearPicker dateValue={startDate} onChange={onStartDateChange} />
       <YearPicker
         dateValue={endDate}
-        maxDate={maxEndDate}
         minDate={minEndDate}
         onChange={onEndDateChange}
       />
