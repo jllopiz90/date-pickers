@@ -111,7 +111,7 @@ const Calendar = ({
               className="mx-2 p-2 focus:outline-none active:bg-gray-300"
               icon={() => <ChevronLeft size={3} />}
             />
-            <span className="mx-8">
+            <span className="mx-2">
               {monthNames[month - 1]} {year}
             </span>
             <ButtonIcon
@@ -135,8 +135,8 @@ const Calendar = ({
                   year === selectedDate.getFullYear()
                 }
                 disabled={
-                  new Date(year, month - 1, dayNumber) > maxDate ||
-                  new Date(year, month - 1, dayNumber) < minDate
+                  new Date(year, month - 1, dayNumber + 1) > maxDate ||
+                  new Date(year, month - 1, dayNumber + 1) < minDate
                 }
                 currentDay={isThisDay(dayNumber + 1)}
                 onClick={() => onDateClick(dayNumber + 1)}

@@ -22,6 +22,7 @@ export interface DateInputProps {
   showPicker: boolean;
   inputTailwindClass?: string;
   inputStyle?: any;
+  disabled?:  boolean;
 }
 
 const DateInput = ({
@@ -43,6 +44,7 @@ const DateInput = ({
   onYearBlur,
   showPicker,
   inputStyle,
+  disabled = false,
   inputTailwindClass = "flex flex-grow flex-shrink-0 items-center border border-gray-500 w-full px-1 py-0.5 leading-none rounded-lg shadow-sm focus:outline-none focus:shadow-outline text-gray-600",
 }: DateInputProps) => {
   const maxMonth = (year < maxYear && 12) || maxDate.getMonth() + 1;
@@ -57,7 +59,7 @@ const DateInput = ({
     >
       <div
         className="flex-grow px-0.5 py-0 box-content"
-        onClick={() => setShowPicker(true)}
+        onClick={() => !disabled && setShowPicker(true)}
       >
         <input
           type="date"
@@ -66,9 +68,9 @@ const DateInput = ({
           className="invisible absolute"
           readOnly
         />
-        {!!tempMonthInput && (
+        {!!monthInput && (
           <>
-            {tempMonthInput < 10 && !!tempMonthInput && <span>0</span>}
+            {(tempMonthInput || 0) < 10  && <span>0</span>}
             <input
               autoComplete="off"
               min="1"
@@ -78,17 +80,18 @@ const DateInput = ({
               type="number"
               value={tempMonthInput}
               className={`${
-                tempMonthInput < 10 || !tempMonthInput ? "w-2.5" : "w-5"
+                (tempMonthInput || 0) < 10 || !tempMonthInput ? "w-2.5" : "w-5"
               }`}
               onChange={onMonthChange}
               onBlur={onMonthBlur}
+              readOnly={disabled}
             />
             <span className="whitespace-pre px-0.5">/</span>
           </>
         )}
-        {!!tempDayInput && (
+        {!!dayInput && (
           <>
-            {(dayInput || 0) < 10 && !!tempDayInput && <span>0</span>}
+            {(tempDayInput || 0) < 10 && <span>0</span>}
             <input
               autoComplete="off"
               data-input="true"
@@ -99,9 +102,10 @@ const DateInput = ({
               placeholder="--"
               type="number"
               value={tempDayInput}
-              className={`${tempDayInput < 10 ? "w-2.5" : "w-5"}`}
+              className={`${(tempDayInput || 0) < 10 ? "w-2.5" : "w-5"}`}
               onChange={onDayChange}
               onBlur={onDayBlur}
+              readOnly={disabled}
             />
             <span className="whitespace-pre px-0.5">/</span>
           </>
@@ -119,12 +123,13 @@ const DateInput = ({
           className="w-10"
           onChange={onYearChange}
           onBlur={onYearBlur}
+          readOnly={disabled}
         ></input>
       </div>
       <ButtonIcon
         className="border-0 bg-transparent py-1 px-1.5"
         icon={CalendarIcon}
-        onClick={() => setShowPicker(!showPicker)}
+        onClick={() => !disabled && setShowPicker(!showPicker)}
       />
     </div>
   );

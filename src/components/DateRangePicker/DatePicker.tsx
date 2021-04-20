@@ -13,14 +13,7 @@ export interface DatePickerProps {
   maxDate?: Date;
   minDate?: Date;
   onChange: (date: Date) => void;
-}
-
-export interface DayBtnProps {
-  day: number;
-  onClick: () => void;
-  active?: boolean;
-  currentDay?: boolean;
-  disabled?: boolean;
+  dateInputClasses?: string;
 }
 
 const DatePicker = ({
@@ -28,6 +21,7 @@ const DatePicker = ({
   maxDate = today,
   minDate = new Date(1979, 0, 1),
   dateValue = today,
+  dateInputClasses,
 }: DatePickerProps): JSX.Element => {
   const [selectedDate, setSelectedDate] = useState(dateValue);
   const [year, setYear] = useState(today.getFullYear());
@@ -185,6 +179,7 @@ const DatePicker = ({
           onYearChange={onYearChange}
           onYearBlur={onYearBlur}
           showPicker={showPicker}
+          inputTailwindClass={dateInputClasses}
         />
         {showPicker && (
           <Calendar
