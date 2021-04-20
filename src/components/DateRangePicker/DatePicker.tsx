@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import ButtonIcon from "../icons/button-icon";
-import ChevronLeft from "../icons/ChevronLeft";
-import ChevronRight from "../icons/ChevronRight";
 import OutsideEvent from "../../hooks/useOutsideElementEvent";
 import DateInput from "./DateInput";
+import Calendar from "./Calendar";
 import {
-  monthNames,
   getMaxDayPerMonth,
-  getArrayWithNumbers,
 } from "../../utils/utils";
 
 const today = new Date();
@@ -26,28 +22,6 @@ export interface DayBtnProps {
   currentDay?: boolean;
   disabled?: boolean;
 }
-
-const DayBtn = ({
-  day,
-  onClick,
-  active = false,
-  currentDay = false,
-  disabled = false,
-}: DayBtnProps): JSX.Element => (
-  <button
-    className={`px-1 mx-1 my-2 focus:outline-none ${
-      currentDay && !active
-        ? "bg-calendar-yellow-200 hover:bg-calendar-yellow-100"
-        : ""
-    } ${active ? "bg-calendar-blue-200 hover:bg-calendar-blue-100" : ""} ${
-      disabled ? "bg-gray-100" : "hover:bg-gray-100 active:bg-gray-300"
-    }`}
-    onClick={() => !disabled && onClick()}
-    style={{ width: 45, height: 40 }}
-  >
-    <span className="px-2 text-sm">{day}</span>
-  </button>
-);
 
 const DatePicker = ({
   onChange,
@@ -130,14 +104,6 @@ const DatePicker = ({
     setShowPicker(false);
   };
 
-  const isThisDay = (dayParam: number) => {
-    return (
-      today.getMonth() === month - 1 &&
-      today.getFullYear() === year &&
-      today.getDate() === dayParam
-    );
-  };
-
   const onMonthChange = (event: any) => {
     const maxMonth = (yearInput < maxYear && 12) || maxDate.getMonth() + 1;
     if (+event.target.value <= maxMonth) {
@@ -198,69 +164,6 @@ const DatePicker = ({
     }
   };
 
-  const daysPickerContent = () => (
-    <span className="contents">
-      <div
-        style={{
-          width: 380,
-          height: 320,
-          position: "absolute",
-          top: "100%",
-          bottom: "unset",
-          left: -100,
-          right: "unset",
-          zIndex: 20,
-        }}
-        className="bg-white border-2 overflow-y-scroll mx-2"
-      >
-        <div className="flex flex-row justify-center pt-2">
-          <ButtonIcon
-            onClick={decreaseYear}
-            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
-            icon={() => <ChevronLeft size={3} double />}
-          />
-          <ButtonIcon
-            onClick={decreaseMonth}
-            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
-            icon={() => <ChevronLeft size={3} />}
-          />
-          <span className="mx-8">
-            {monthNames[month - 1]} {year}
-          </span>
-          <ButtonIcon
-            onClick={increaseMonth}
-            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
-            icon={() => <ChevronRight size={3} />}
-          />
-          <ButtonIcon
-            onClick={increaseYear}
-            className="mx-2 p-2 focus:outline-none active:bg-gray-300"
-            icon={() => <ChevronRight size={3} double />}
-          />
-        </div>
-        <div>
-          {getArrayWithNumbers(getMaxDayPerMonth(month)).map((dayNumber) => (
-            <DayBtn
-              day={dayNumber + 1}
-              active={
-                dayNumber + 1 === selectedDate.getDate() &&
-                month === selectedDate.getMonth() + 1 &&
-                year === selectedDate.getFullYear()
-              }
-              disabled={
-                new Date(year, month - 1, dayNumber) > maxDate ||
-                new Date(year, month - 1, dayNumber) < minDate
-              }
-              currentDay={isThisDay(dayNumber + 1)}
-              onClick={() => onDateClick(dayNumber + 1)}
-              key={`day_${dayNumber}`}
-            />
-          ))}
-        </div>
-      </div>
-    </span>
-  );
-
   return (
     <OutsideEvent onClick={() => setShowPicker(false)}>
       <div className="box-border inline-flex relative mx-2">
@@ -283,7 +186,20 @@ const DatePicker = ({
           onYearBlur={onYearBlur}
           showPicker={showPicker}
         />
-        {showPicker && daysPickerContent()}
+        {showPicker && (
+          <Calendar
+            decreaseMonth={decreaseMonth}
+            decreaseYear={decreaseYear}
+            increaseMonth={increaseMonth}
+            increaseYear={increaseYear}
+            maxDate={maxDate}
+            minDate={minDate}
+            month={month}
+            onDateClick={onDateClick}
+            selectedDate={selectedDate}
+            year={year}
+          />
+        )}
       </div>
     </OutsideEvent>
   );
