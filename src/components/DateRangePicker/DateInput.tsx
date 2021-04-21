@@ -65,8 +65,9 @@ const DateInput = ({
           type="date"
           name="date"
           value={getYYYYMMDDFormat(selectedDate)}
-          className="invisible absolute"
+          className="absolute"
           readOnly
+          style={{ visibility: 'hidden'}}
         />
         {!!monthInput && (
           <>
